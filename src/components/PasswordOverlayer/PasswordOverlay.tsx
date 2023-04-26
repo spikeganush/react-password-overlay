@@ -1,48 +1,34 @@
+import React, { FC, useRef } from 'react';
 import { useEffect, useState } from 'react';
-import { handlePasswordVerif } from './utils/generalUtilities';
-import './sass/app.scss';
+import '../../sass/app.scss';
+import { IPasswordVerifProps } from './passwordType';
 
-interface IPasswordVerif {
-  length: boolean;
-  upper: boolean;
-  lower: boolean;
-  number: boolean;
-  special: boolean;
-}
+const PasswordOverlay: FC<IPasswordVerifProps> = ({
+  password,
+  overlayVisibile,
+  checkError,
+  passwordRef,
+  minLength = 8,
+}) => {
+  const handlePasswordVerif = (password: string, minLength: number) => {
+    const length = password.length >= minLength;
+    const upper = /[A-Z]/.test(password);
+    const lower = /[a-z]/.test(password);
+    const number = /[0-9]/.test(password);
+    const special = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
 
-interface IPasswordVerifProps {
-  /**
-   * Password to verify
-   * @type {string}
-   */
-  password: string;
-  /**
-   * Show or hide the overlay
-   * @type {boolean}
-   */
-  overlayVisibile: boolean;
-  /**
-   * Password verification error when submit the register form
-   * @type {IPasswordVerif}
-   */
-  passwordVerifError: IPasswordVerif;
-  /**
-   * Minimum length of the password
-   * @type {number}
-   * @default 8
-   * @optional
-   */
-  minLength?: number;
-}
+    return { length, upper, lower, number, special };
+  };
 
-const PasswordOverlay = (props: IPasswordVerifProps) => {
-  const {
-    password,
-    overlayVisibile,
-    passwordVerifError,
-    minLength = 8,
-  } = props;
   const [passwordVerif, setPasswordVerif] = useState({
+    length: false,
+    upper: false,
+    lower: false,
+    number: false,
+    special: false,
+  });
+
+  const [passwordVerifError, setPasswordVerifError] = useState({
     length: false,
     upper: false,
     lower: false,
@@ -78,10 +64,40 @@ const PasswordOverlay = (props: IPasswordVerifProps) => {
     },
   ];
 
+  const handleVerifError = () => {
+    // Go through each keys of passwordVerif and check if there is any false
+    // If there is, set the error to true
+    Object.keys(passwordVerif).forEach((key) => {
+      if (!passwordVerif[key as keyof typeof passwordVerif]) {
+        setPasswordVerifError((prevState) => ({
+          ...prevState,
+          [key]: true,
+        }));
+        passwordRef.current?.focus();
+      }
+    });
+  };
+
   useEffect(() => {
-    const verif = handlePasswordVerif(password, minLength);
-    setPasswordVerif(verif);
+    let subscribe = true;
+    if (subscribe) {
+      const verif = handlePasswordVerif(password, minLength);
+      setPasswordVerif(verif);
+    }
+    return () => {
+      subscribe = false;
+    };
   }, [password, minLength]);
+
+  useEffect(() => {
+    let subscribe = true;
+    if (subscribe && checkError) {
+      handleVerifError();
+    }
+    return () => {
+      subscribe = false;
+    };
+  }, [checkError]);
 
   return (
     <div
@@ -99,12 +115,12 @@ const PasswordOverlay = (props: IPasswordVerifProps) => {
           viewBox="0 0 416.979 416.979"
           stroke="#ffffff"
         >
-          <g id="SVGRepo_bgCarrier" stroke-width="0" />
+          <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
           <g
             id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
 
           <g id="SVGRepo_iconCarrier">
@@ -132,12 +148,12 @@ const PasswordOverlay = (props: IPasswordVerifProps) => {
               stroke="#008000"
               style={{ display: item.verif ? 'inline-block' : 'none' }}
             >
-              <g id="SVGRepo_bgCarrier" stroke-width="0" />
+              <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
               <g
                 id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
 
               <g id="SVGRepo_iconCarrier">
@@ -148,9 +164,9 @@ const PasswordOverlay = (props: IPasswordVerifProps) => {
                     id="Vector"
                     d="M6 12L10.2426 16.2426L18.727 7.75732"
                     stroke="#008000"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />{' '}
                 </g>{' '}
               </g>
@@ -165,12 +181,12 @@ const PasswordOverlay = (props: IPasswordVerifProps) => {
                 display: item.error && !item.verif ? 'inline-block' : 'none',
               }}
             >
-              <g id="SVGRepo_bgCarrier" stroke-width="0" />
+              <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
               <g
                 id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
 
               <g id="SVGRepo_iconCarrier">
