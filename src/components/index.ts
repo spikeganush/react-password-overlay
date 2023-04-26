@@ -1,1 +1,2 @@
-export { default as PasswordOverlay } from './PasswordOverlayer/PasswordOverlay';
+export { default as PasswordOverlay } from './PasswordOverlay/PasswordOverlay';
+export * from './Utils';

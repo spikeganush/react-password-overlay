@@ -1,6 +1,6 @@
 {
   "name": "react-password-overlay",
-  "version": "1.0.9",
+  "version": "1.0.20",
   "description": "Overlay to check the password policies",
   "main": "dist/csj/index.js",
   "module": "dist/esm/index.js",

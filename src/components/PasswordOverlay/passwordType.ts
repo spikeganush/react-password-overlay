@@ -34,4 +34,11 @@ export interface IPasswordVerifProps {
    * @optional
    */
   minLength?: number;
+  /**
+   * Top position of the overlay
+   * @type {'top' | 'bottom'}
+   * @default 'top'
+   * @optional
+   */
+  position?: 'top' | 'bottom';
 }

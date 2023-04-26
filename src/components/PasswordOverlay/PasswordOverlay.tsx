@@ -1,7 +1,8 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import { useEffect, useState } from 'react';
 import '../../sass/app.scss';
 import { IPasswordVerifProps } from './passwordType';
+import { handlePasswordVerif } from '../Utils';
 
 const PasswordOverlay: FC<IPasswordVerifProps> = ({
   password,
@@ -9,17 +10,8 @@ const PasswordOverlay: FC<IPasswordVerifProps> = ({
   checkError,
   passwordRef,
   minLength = 8,
+  position = 'top',
 }) => {
-  const handlePasswordVerif = (password: string, minLength: number) => {
-    const length = password.length >= minLength;
-    const upper = /[A-Z]/.test(password);
-    const lower = /[a-z]/.test(password);
-    const number = /[0-9]/.test(password);
-    const special = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
-
-    return { length, upper, lower, number, special };
-  };
-
   const [passwordVerif, setPasswordVerif] = useState({
     length: false,
     upper: false,
@@ -99,9 +91,32 @@ const PasswordOverlay: FC<IPasswordVerifProps> = ({
     };
   }, [checkError]);
 
+  useEffect(() => {
+    let subscribe = true;
+    if (subscribe) {
+      setPasswordVerif({
+        length: false,
+        upper: false,
+        lower: false,
+        number: false,
+        special: false,
+      });
+      setPasswordVerifError({
+        length: false,
+        upper: false,
+        lower: false,
+        number: false,
+        special: false,
+      });
+    }
+    return () => {
+      subscribe = false;
+    };
+  }, []);
+
   return (
     <div
-      className="password-popup"
+      className={`password-popup ${position}`}
       style={{ display: overlayVisibile ? 'flex' : 'none' }}
     >
       <div className="password-popup__title">
