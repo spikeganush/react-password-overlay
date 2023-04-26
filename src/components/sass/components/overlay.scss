@@ -1,0 +1,60 @@
+@use '../abstract' as *;
+
+.password-popup {
+  position: absolute;
+  flex-direction: column;
+  top: 11%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 25px 50px;
+  border-radius: 20px;
+  color: white;
+  background: black;
+  width: inherit;
+  @media #{$xs} {
+    top: 30%;
+    width: 90%;
+  }
+  @media #{$xxs} {
+    top: 25%;
+    padding: 25px 35px;
+  }
+  @media #{$passPopup} {
+    top: 35%;
+    padding: 25px 25px;
+  }
+  h4 {
+    color: white;
+    margin: 0;
+    @media #{$xxs} {
+      font-size: 18px;
+    }
+    @media #{$passPopup} {
+      font-size: 14px;
+    }
+  }
+  li {
+    line-height: 1.4;
+    position: relative;
+    @media #{$passPopup} {
+      font-size: 12px;
+    }
+    svg {
+      position: absolute;
+      left: -1.4rem;
+      top: 0.1rem;
+    }
+  }
+  &__title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    svg {
+      margin-right: 1em;
+      @media #{$xxs} {
+        margin-right: 0.5em;
+      }
+    }
+  }
+}
