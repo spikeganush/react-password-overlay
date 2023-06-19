@@ -10,7 +10,7 @@
   border-radius: 20px;
   color: white;
   background: black;
-  width: inherit;
+  width: 380px;
   @media #{$xs} {
     top: 30%;
     width: 90%;
@@ -30,9 +30,26 @@
     }
     @media #{$xxs} {
       top: 25%;
+      padding: 25px 35px;
     }
     @media #{$passPopup} {
       top: 35%;
+      padding: 25px 25px;
+    }
+  }
+  &.overTheTop {
+    top: -18%;
+    padding: 20px 50px;
+    @media #{$xs} {
+      top: -18%;
+    }
+    @media #{$xxs} {
+      top: 90%;
+      padding: 25px 35px;
+    }
+    @media #{$passPopup} {
+      top: 90%;
+      padding: 25px 25px;
     }
   }
   &.bottom {
@@ -50,6 +67,9 @@
   h4 {
     color: white;
     margin: 0;
+    @media #{$iphone} {
+      font-size: 18px;
+    }
     @media #{$xxs} {
       font-size: 18px;
     }
@@ -72,6 +92,7 @@
   &__title {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-bottom: 1em;
     svg {
       margin-right: 1em;
